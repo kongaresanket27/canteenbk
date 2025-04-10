@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canteen Seat Booking</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Canteen Seat Booking</h1>
+    <p>Book your seat and check today's menu!</p>
+  </header>
+
+  <section class="menu">
+    <h2>Today's Menu</h2>
+    <ul>
+      <li>Paneer Butter Masala</li>
+      <li>Dal Tadka</li>
+      <li>Jeera Rice</li>
+      <li>Mixed Veg</li>
+      <li>Roti / Naan</li>
+    </ul>
+  </section>
+
+  <section class="booking-form">
+    <h2>Book a Seat</h2>
+    <p><strong>Note:</strong> Bookings made before <strong>12:00 PM</strong> are confirmed. After 12:00 PM, confirmation
+      is not guaranteed.</p>
+
+    <form action="https://formspree.io/f/xblgqzba" method="POST">
+      <label>
+        <input type="email" name="email" placeholder="Your Email" required />
+      </label>
+      <label>
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="number" name="seat" placeholder="Seat Number" required />
+      </label>
+      <button type="submit">Book Now</button>
+    </form>
+    <p id="responseMsg"></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Canteen Booking System</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
