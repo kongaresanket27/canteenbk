@@ -1,36 +1,177 @@
-<section style="background-color: #1a1a1a; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-  <h2>Menu and Seat Booking</h2>
-  <ul>
-    <li>🍛 Rice Bowl - $5</li>
-    <li>🍔 Burger - $4</li>
-    <li>🍝 Pasta - $6</li>
-    <li>🥗 Salad - $3</li>
-  </ul>
-  <button onclick="bookSeat()" style="margin: 5px;" id="bookBtn">Book a Seat</button>
-  <button onclick="cancelSeat()" style="margin: 5px;" id="cancelBtn">Cancel a Seat</button>
-  <p id="seatStatus">Seats Booked: <strong>0</strong> / 8</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Canteen Booking Website</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
 
+    h1, h2 {
+      color: #00ffe7;
+    }
+
+    .section {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 255, 231, 0.1);
+    }
+
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    input {
+      background-color: #2e2e2e;
+      color: white;
+    }
+
+    button {
+      background-color: #00ffe7;
+      color: #121212;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00d5c0;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-row button {
+      flex: 1;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li::marker {
+      color: #00ffe7;
+    }
+
+    footer {
+      text-align: center;
+      padding-top: 20px;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍴 Welcome to Our Canteen</h1>
+
+  <!-- Section 1: Canteen Menu -->
+  <div class="section">
+    <h2>📋 Canteen Menu</h2>
+    <ul>
+      <li>Rice Bowl - $5</li>
+      <li>Veg Burger - $4</li>
+      <li>Pasta Alfredo - $6</li>
+      <li>Garden Salad - $3</li>
+    </ul>
+  </div>
+
+  <!-- Section 2: Seat Booking -->
+  <div class="section">
+    <h2>🪑 Seat Booking</h2>
+    <div class="btn-row">
+      <button onclick="bookSeat()">Book a Seat</button>
+      <button onclick="cancelSeat()">Cancel a Seat</button>
+    </div>
+    <p id="seatStatus">Available Seats: <strong>8</strong></p>
+  </div>
+
+  <!-- Section 3: Parcel Booking -->
+  <div class="section">
+    <h2>📦 Parcel Booking</h2>
+    <input type="text" id="parcelInput" placeholder="Enter your parcel order" />
+    <button onclick="bookParcel()">Place Parcel Order</button>
+  </div>
+
+  <!-- Section 4: Contact Section -->
+  <div class="section">
+    <h2>📞 Contact Us</h2>
+    <input type="text" id="contactName" placeholder="Your Name" />
+    <input type="text" id="contactMessage" placeholder="Your Message" />
+    <button onclick="sendContact()">Send Message</button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    Thank you for watching!
+  </footer>
+
+  <!-- JavaScript -->
   <script>
-    let bookedSeats = 0;
-    const maxSeats = 8;
+    let availableSeats = 8;
 
-    function updateSeatStatus() {
-      document.getElementById('seatStatus').innerHTML = `Seats Booked: <strong>${bookedSeats}</strong> / ${maxSeats}`;
-      document.getElementById('bookBtn').disabled = bookedSeats >= maxSeats;
+    function updateSeatDisplay() {
+      document.getElementById('seatStatus').innerHTML = `Available Seats: <strong>${availableSeats}</strong>`;
     }
 
     function bookSeat() {
-      if (bookedSeats < maxSeats) {
-        bookedSeats++;
-        updateSeatStatus();
+      if (availableSeats > 0) {
+        availableSeats--;
+        updateSeatDisplay();
+        alert('Seat successfully booked!');
+      } else {
+        alert('Sorry, no seats available.');
       }
     }
 
     function cancelSeat() {
-      if (bookedSeats > 0) {
-        bookedSeats--;
-        updateSeatStatus();
+      if (availableSeats < 8) {
+        availableSeats++;
+        updateSeatDisplay();
+        alert('Seat booking cancelled.');
+      } else {
+        alert('All seats are already available.');
+      }
+    }
+
+    function bookParcel() {
+      const parcel = document.getElementById('parcelInput').value.trim();
+      if (parcel) {
+        alert(`Parcel order placed: ${parcel}`);
+        document.getElementById('parcelInput').value = '';
+      } else {
+        alert('Please enter your parcel order.');
+      }
+    }
+
+    function sendContact() {
+      const name = document.getElementById('contactName').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+      if (name && message) {
+        alert(`Message sent from ${name}: ${message}`);
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactMessage').value = '';
+      } else {
+        alert('Please fill out both name and message.');
       }
     }
   </script>
-</section>
+
+</body>
+</html>
