@@ -64,9 +64,9 @@
   <!-- Seat Booking Section -->
   <div class="section">
     <h2>🪑 Seat Booking</h2>
-    <p>Available Seats: <strong id="seatCount">8</strong></p>
+    <p>Available Seats: <strong id="seatCount">80</strong></p>
     <button onclick="bookSeat()">Book a Seat</button>
-    <button onclick="cancelSeat()">Cancel a Seat</button>
+    
 
     <!-- Form to send email via Formspree -->
     <form
@@ -90,7 +90,7 @@
   </div>
 
   <script>
-    let availableSeats = 8;
+    let availableSeats = 80;
     let isBookingInProgress = false;  // Flag to ensure only one user can book at a time
 
     // Function to book a seat
@@ -118,7 +118,7 @@
 
     // Function to cancel a seat
     function cancelSeat() {
-      if (availableSeats < 8) {
+      if (availableSeats < 80) {
         availableSeats++;
         updateSeats();
         alert("Your seat has been cancelled.");
