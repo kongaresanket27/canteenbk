@@ -1,115 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Canteen Booking Website</title>
+  <meta charset="UTF-8" />
+  <title>Live Canteen Booking</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <style>
     body {
       background-color: #121212;
-      color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
+      color: #fff;
+      font-family: Arial, sans-serif;
       padding: 20px;
     }
-
-    h1, h2 {
-      color: #00ffe7;
-    }
-
     .section {
-      background-color: #1e1e1e;
+      background: #1e1e1e;
+      padding: 20px;
       border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 12px rgba(0, 255, 231, 0.1);
+      margin-bottom: 20px;
     }
-
-    input, button {
-      padding: 10px;
-      margin-top: 10px;
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px 0 0;
+      background: #00ffe7;
+      color: #000;
       border: none;
       border-radius: 8px;
-      width: 100%;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-
-    input {
-      background-color: #2e2e2e;
-      color: white;
-    }
-
-    button {
-      background-color: #00ffe7;
-      color: #121212;
-      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      font-weight: bold;
     }
-
-    button:hover {
-      background-color: #00d5c0;
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .btn-row button {
-      flex: 1;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    ul li::marker {
+    h2 {
       color: #00ffe7;
     }
-
-    footer {
-      text-align: center;
-      padding-top: 20px;
-      color: #888;
-      font-size: 14px;
+    input {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 100%;
+      background-color: #2e2e2e;
+      color: white;
     }
   </style>
 </head>
 <body>
 
-  <h1>🍴 Welcome to Our Canteen</h1>
+  <h1>🍴 Live Canteen Booking</h1>
 
-  <!-- Section 1: Canteen Menu -->
+  <!-- Seat Booking Section -->
   <div class="section">
-    <h2>📋 Canteen Menu</h2>
-    <ul>
-      <li>Rice Bowl - $5</li>
-      <li>Veg Burger - $4</li>
-      <li>Pasta Alfredo - $6</li>
-      <li>Garden Salad - $3</li>
-    </ul>
+    <h2>🪑 Seats</h2>
+    <p>Available Seats: <strong id="seatCount">Loading...</strong></p>
+    <button onclick="bookSeat()">Book Seat</button>
+    <button onclick="cancelSeat()">Cancel Seat</button>
   </div>
 
-  <!-- Section 2: Seat Booking -->
-  <div class="section">
-    <h2>🪑 Seat Booking</h2>
-    <div class="btn-row">
-      <button onclick="bookSeat()">Book a Seat</button>
-      <button onclick="cancelSeat()">Cancel a Seat</button>
-    </div>
-    <p id="seatStatus">Available Seats: <strong>8</strong></p>
-  </div>
-
-  <!-- Section 3: Parcel Booking -->
+  <!-- Parcel Booking Section -->
   <div class="section">
     <h2>📦 Parcel Booking</h2>
-    <input type="text" id="parcelInput" placeholder="Enter your parcel order" />
+    <input type="text" id="parcelInput" placeholder="Enter parcel order" />
     <button onclick="bookParcel()">Place Parcel Order</button>
   </div>
 
-  <!-- Section 4: Contact Section -->
+  <!-- Contact Section -->
   <div class="section">
     <h2>📞 Contact Us</h2>
     <input type="text" id="contactName" placeholder="Your Name" />
@@ -117,37 +69,42 @@
     <button onclick="sendContact()">Send Message</button>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    Thank you for watching!
-  </footer>
-
-  <!-- JavaScript -->
   <script>
-    let availableSeats = 8;
+    // Replace this with your own Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "your-app.firebaseapp.com",
+      databaseURL: "https://your-app.firebaseio.com",
+      projectId: "your-app",
+      storageBucket: "your-app.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abc123"
+    };
 
-    function updateSeatDisplay() {
-      document.getElementById('seatStatus').innerHTML = `Available Seats: <strong>${availableSeats}</strong>`;
-    }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const seatRef = db.ref("availableSeats");
+
+    // Listen for live updates
+    seatRef.on("value", snapshot => {
+      const count = snapshot.val();
+      document.getElementById("seatCount").innerText = count ?? "0";
+    });
 
     function bookSeat() {
-      if (availableSeats > 0) {
-        availableSeats--;
-        updateSeatDisplay();
-        alert('Seat successfully booked!');
-      } else {
-        alert('Sorry, no seats available.');
-      }
+      seatRef.transaction(current => {
+        if (current > 0) return current - 1;
+        alert("No seats available!");
+        return current;
+      });
     }
 
     function cancelSeat() {
-      if (availableSeats < 8) {
-        availableSeats++;
-        updateSeatDisplay();
-        alert('Seat booking cancelled.');
-      } else {
-        alert('All seats are already available.');
-      }
+      seatRef.transaction(current => {
+        if (current < 8) return current + 1;
+        alert("All seats are already available.");
+        return current;
+      });
     }
 
     function bookParcel() {
@@ -156,7 +113,7 @@
         alert(`Parcel order placed: ${parcel}`);
         document.getElementById('parcelInput').value = '';
       } else {
-        alert('Please enter your parcel order.');
+        alert('Please enter a parcel order.');
       }
     }
 
@@ -168,7 +125,7 @@
         document.getElementById('contactName').value = '';
         document.getElementById('contactMessage').value = '';
       } else {
-        alert('Please fill out both name and message.');
+        alert('Please fill in both fields.');
       }
     }
   </script>
