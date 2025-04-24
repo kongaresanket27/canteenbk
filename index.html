@@ -1,113 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Canteen Website</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-    .card {
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    .card h2 {
-      margin-top: 0;
-    }
-    .button {
-      padding: 10px 15px;
-      margin: 5px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-    .button:disabled {
-      background-color: #aaa;
-      cursor: not-allowed;
-    }
-    input {
-      display: block;
-      margin: 10px 0;
-      padding: 8px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>Canteen Website</h1>
-
-  <!-- Section 1: Menu and Seat Booking -->
-  <div class="card">
-    <h2>Menu and Seat Booking</h2>
-    <ul>
-      <li>Rice Bowl - $5</li>
-      <li>Burger - $4</li>
-      <li>Pasta - $6</li>
-      <li>Salad - $3</li>
-    </ul>
-    <button class="button" id="bookSeat">Book a Seat</button>
-    <button class="button" id="cancelSeat">Cancel a Seat</button>
-    <p id="seatCount">Seats Booked: <strong>0</strong> / 8</p>
-  </div>
-
-  <!-- Section 2: Packed Food Booking -->
-  <div class="card">
-    <h2>Book Packed Food</h2>
-    <input type="text" id="packedOrder" placeholder="Enter your packed food order">
-    <button class="button" onclick="placeOrder()">Place Order</button>
-  </div>
-
-  <!-- Section 3: Contact -->
-  <div class="card">
-    <h2>Contact Us</h2>
-    <input type="text" id="contactName" placeholder="Your Name">
-    <input type="text" id="contactMessage" placeholder="Your Message">
-    <button class="button" onclick="sendMessage()">Send Message</button>
-  </div>
+<section style="background-color: #1a1a1a; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+  <h2>Menu and Seat Booking</h2>
+  <ul>
+    <li>🍛 Rice Bowl - $5</li>
+    <li>🍔 Burger - $4</li>
+    <li>🍝 Pasta - $6</li>
+    <li>🥗 Salad - $3</li>
+  </ul>
+  <button onclick="bookSeat()" style="margin: 5px;" id="bookBtn">Book a Seat</button>
+  <button onclick="cancelSeat()" style="margin: 5px;" id="cancelBtn">Cancel a Seat</button>
+  <p id="seatStatus">Seats Booked: <strong>0</strong> / 8</p>
 
   <script>
     let bookedSeats = 0;
     const maxSeats = 8;
 
-    document.getElementById('bookSeat').onclick = () => {
+    function updateSeatStatus() {
+      document.getElementById('seatStatus').innerHTML = `Seats Booked: <strong>${bookedSeats}</strong> / ${maxSeats}`;
+      document.getElementById('bookBtn').disabled = bookedSeats >= maxSeats;
+    }
+
+    function bookSeat() {
       if (bookedSeats < maxSeats) {
         bookedSeats++;
-        updateSeatCount();
+        updateSeatStatus();
       }
-    };
+    }
 
-    document.getElementById('cancelSeat').onclick = () => {
+    function cancelSeat() {
       if (bookedSeats > 0) {
         bookedSeats--;
-        updateSeatCount();
+        updateSeatStatus();
       }
-    };
-
-    function updateSeatCount() {
-      document.getElementById('seatCount').innerHTML = `Seats Booked: <strong>${bookedSeats}</strong> / ${maxSeats}`;
-    }
-
-    function placeOrder() {
-      const order = document.getElementById('packedOrder').value;
-      alert(`Order placed: ${order}`);
-    }
-
-    function sendMessage() {
-      const name = document.getElementById('contactName').value;
-      const message = document.getElementById('contactMessage').value;
-      alert(`Message from ${name}: ${message}`);
     }
   </script>
-
-</body>
-</html>
+</section>
