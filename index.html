@@ -138,7 +138,27 @@
       const item = document.getElementById("parcelOrder").value;
       if (item.trim()) {
         alert(`Parcel order placed for: ${item}`);
-        document.getElementById("parcelOrder").value = '';
+        <div class="section">
+    <h2>🪑 Seat Booking</h2>
+    <p>Available Seats: <strong id="seatCount">80</strong></p>
+    <button onclick="bookSeat()">Book a Seat</button>
+    <input name="Name" id="bookingMessage" value="Enter Your Name" />
+    
+
+    <!-- Form to send email via Formspree -->
+    <form
+      id="seatBookingForm"
+      action="https://formspree.io/f/mwplawye"
+      method="POST"
+      style="display: none;"
+    >
+      <input type="hidden" name="seatBooking" value="Booked a parcel />
+      <input name="Name" id="bookingMessage" value="Enter Your Name" />
+      <input type="hidden" name="_subject" value="Canteen Seat Booking" />
+      <input type="hidden" name="_next" value="https://your-website.com/thank-you" />
+    </form>
+  </div>
+
       } else {
         alert("Please enter a parcel item.");
       }
