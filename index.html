@@ -68,19 +68,25 @@
     <button onclick="bookSeat()">Book a Seat</button>
     <input name="Name" id="bookingMessage" value="Enter Your Name" />
     
+<!-- modify this form HTML and place wherever you want your form -->
+<form
+  action="https://formspree.io/f/mnndpnka"
+  method="POST"
+>
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+</form>
 
     <!-- Form to send email via Formspree -->
-    <form
-      id="seatBookingForm"
-      action="https://formspree.io/f/mwplawye"
-      method="POST"
-      style="display: none;"
-    >
-      <input type="hidden" name="seatBooking" value="Booked a seat" />
-      <input name="Name" id="bookingMessage" value="Enter Your Name" />
-      <input type="hidden" name="_subject" value="Canteen Seat Booking" />
-      <input type="hidden" name="_next" value="https://your-website.com/thank-you" />
-    </form>
+
   </div>
 
   <!-- Parcel Section -->
