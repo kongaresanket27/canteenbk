@@ -77,7 +77,7 @@
     <input type="email" name="email">
   </label>
   <label>
-    Your message:
+    Name:
     <textarea name="Name"></textarea>
   </label>
   <!-- your other form fields go here -->
@@ -91,7 +91,17 @@
   <!-- Parcel Section -->
   <div class="section">
     <h2>📦 Book a Parcel</h2>
-    <input type="text" id="parcelOrder" placeholder="Enter parcel item" />
+    <form
+  action="https://formspree.io/f/mnndpnka"
+  method="POST"
+>
+  <label>
+    Name:
+    <textarea name="Name"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+</form>
     <button onclick="placeParcel()">Place Parcel Order</button>
   </div>
 
