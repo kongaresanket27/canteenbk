@@ -90,16 +90,23 @@
   <!-- Parcel Section -->
   <div class="section">
     <h2>📦 Book a Parcel</h2>
-    <form
+   <form
   action="https://formspree.io/f/mnndpnka"
   method="POST"
 >
   <label>
-    Name:
-          <input type="name" name="Name">
+    Your email:
+    <input type="email" name="email">
   </label>
+  <label>
+    Name:
+        <input type="name" name="Name">
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Book a Parcel</button>
 </form>
-    <button onclick="placeParcel()">Place Parcel Order</button>
+
+   
   </div>
 
   <script>
