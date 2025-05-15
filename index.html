@@ -8,8 +8,12 @@
     .section{background-color:#1e1e1e;padding:20px;border-radius:12px;margin-bottom:20px;box-shadow:0 0 10px rgba(0,0,0,0.5);}
     h2{color:#00ffc8;}
     button{background-color:#00ffc8;color:#000;padding:10px 20px;margin-top:10px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;}
-    input{width:100%;padding:10px;margin-top:10px;margin-bottom:10px;background-color:#2b2b2b;border:none;border-radius:8px;color:#fff;}
+    input, label{width:100%;padding:10px;margin-top:10px;margin-bottom:10px;background-color:#2b2b2b;border:none;border-radius:8px;color:#fff;display:block;}
     ul{padding-left:20px;}
+    .qr-container{margin-top:10px;text-align:center;}
+    .qr-container img{width:200px;border-radius:12px;}
+    .checkbox-label{display:flex;align-items:center;gap:10px;}
+    .checkbox-label input{width:auto;margin:0;}
   </style>
 </head>
 <body>
@@ -30,10 +34,16 @@
   <div class="section">
     <h2>🪑 Seat Booking</h2>
     <p>Available Seats: <strong id="seatCount">80</strong></p>
+    <div class="qr-container">
+      <p><strong>Scan & Pay via PhonePe</strong></p>
+      <img src="/mnt/data/021f8695-0edf-477b-bc0b-08fdabe80aa4.jpg" alt="PhonePe QR" />
+      <p style="margin-top:5px;">Sanket Kongare</p>
+    </div>
     <form id="seatBookingForm" onsubmit="return handleBooking(event)" method="POST" action="https://formspree.io/f/mnndpnka">
       <label>Your email:<input type="email" name="email" required></label>
       <label>Name:<input type="text" name="Name" required></label>
       <label>Prepaid Amount (₹):<input type="number" id="prepaidAmount" name="prepaidAmount" required></label>
+      <label class="checkbox-label"><input type="checkbox" id="paymentConfirmed"> Payment Received by Owner</label>
       <button type="submit">Book a Seat</button>
     </form>
   </div>
@@ -41,28 +51,75 @@
   <!-- Parcel Section -->
   <div class="section">
     <h2>📦 Book a Parcel</h2>
-    <form action="https://formspree.io/f/mnndpnka" method="POST">
+    <div class="qr-container">
+      <p><strong>Scan & Pay via PhonePe</strong></p>
+      <img src="/mnt/data/021f8695-0edf-477b-bc0b-08fdabe80aa4.jpg" alt="PhonePe QR" />
+      <p style="margin-top:5px;">Sanket Kongare</p>
+    </div>
+    <form onsubmit="return handleParcel(event)" method="POST" action="https://formspree.io/f/mnndpnka">
       <label>Your email:<input type="email" name="email" required></label>
       <label>Name:<input type="text" name="Name" required></label>
+      <label>Prepaid Amount (₹):<input type="number" id="parcelPrepaid" name="prepaidAmount" required></label>
+      <label class="checkbox-label"><input type="checkbox" id="parcelPaymentConfirmed"> Payment Received by Owner</label>
       <button type="submit">Book a Parcel</button>
     </form>
   </div>
 
   <script>
-    let availableSeats = 80, minPrepaid = 75;
-    function updateSeats(){document.getElementById("seatCount").innerText = availableSeats;}
-    function handleBooking(e){
+    let availableSeats = 80;
+    const minPrepaid = 75;
+
+    function updateSeats() {
+      document.getElementById("seatCount").innerText = availableSeats;
+    }
+
+    function handleBooking(e) {
       e.preventDefault();
-      if(availableSeats<=0){alert("No seats available!");return false;}
-      const prepaid=parseFloat(document.getElementById("prepaidAmount").value);
-      if(isNaN(prepaid)||prepaid<minPrepaid){
-        alert(`Minimum prepaid amount is ₹${minPrepaid}`);return false;
+      const prepaid = parseFloat(document.getElementById("prepaidAmount").value);
+      const confirmed = document.getElementById("paymentConfirmed").checked;
+
+      if (!confirmed) {
+        alert("Booking not allowed until owner confirms payment received.");
+        return false;
       }
+
+      if (isNaN(prepaid) || prepaid < minPrepaid) {
+        alert(`Minimum prepaid amount is ₹${minPrepaid}`);
+        return false;
+      }
+
+      if (availableSeats <= 0) {
+        alert("No seats available!");
+        return false;
+      }
+
       availableSeats--;
       updateSeats();
       alert("Seat successfully booked!");
-      e.target.submit();return true;
+      e.target.submit();
+      return true;
+    }
+
+    function handleParcel(e) {
+      e.preventDefault();
+      const prepaid = parseFloat(document.getElementById("parcelPrepaid").value);
+      const confirmed = document.getElementById("parcelPaymentConfirmed").checked;
+
+      if (!confirmed) {
+        alert("Parcel cannot be booked until payment is confirmed by owner.");
+        return false;
+      }
+
+      if (isNaN(prepaid) || prepaid < minPrepaid) {
+        alert(`Minimum prepaid amount is ₹${minPrepaid}`);
+        return false;
+      }
+
+      alert("Parcel successfully booked!");
+      e.target.submit();
+      return true;
     }
   </script>
 </body>
 </html>
+
